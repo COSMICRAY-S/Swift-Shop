@@ -1,6 +1,6 @@
 # swift_shop
 
-A Flutter project developed by MD SHAH ALOM.
+A Flutter project developed by COSMICRAY-SAGOR.
 
 ## Getting Started
 
