@@ -23,7 +23,6 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   //controller use korar jnno controller er instancee lagbe
   final SignUpController signUpController = Get.put(SignUpController());
-
   //data store korar jnno init
   TextEditingController userName = TextEditingController();
   TextEditingController userEmail = TextEditingController();
