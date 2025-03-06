@@ -12,6 +12,7 @@ analyzer:
     unused_local_variable: ignore
     file_names: ignore
     unnecessary_overrides: ignore
+    sort_child_properties_last: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:

@@ -2,10 +2,14 @@
 
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:swift_shop/controllers/get-user-data-controller.dart';
+import 'package:swift_shop/screens/admin-panel/admin-main-screen.dart';
 import 'package:swift_shop/screens/auth-ui/welcome-screen.dart';
+import 'package:swift_shop/screens/user-panel/main-screen.dart';
 //import 'package:swift_shop/screens/user-panel/main-screen.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 
@@ -17,12 +21,30 @@ class SpalshScreen extends StatefulWidget {
 }
 
 class _SpalshScreenState extends State<SpalshScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   @override
   void initState() {
     super.initState();
     Timer(Duration(seconds: 4), () {
-      Get.offAll(() => WelcomeScreen());
+      loggedin(context);
     });
+  }
+
+  Future<void> loggedin(BuildContext context) async {
+    if (user != null) {
+      final GetUserDataController getUserDataController =
+          Get.put(GetUserDataController());
+      var userData = await getUserDataController.getUserData(user!.uid);
+
+      if (userData[0]['isAdmin'] == true) {
+        Get.offAll(() => AdminMainScreen());
+      } else {
+        Get.offAll(() => MainScreen());
+      }
+    } else {
+      Get.to(() => WelcomeScreen());
+    }
   }
 
   @override
