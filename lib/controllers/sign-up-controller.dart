@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:swift_shop/models/user_model.dart';
@@ -31,7 +30,9 @@ class SignUpController extends GetxController {
       //
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
-              email: userEmail, password: userPassword); //
+        email: userEmail,
+        password: userPassword,
+      ); //
       //jokhoni user toiri hobe ekhane asbe then verification hbe
       await userCredential.user!.sendEmailVerification();
       UserModel userModel = UserModel(

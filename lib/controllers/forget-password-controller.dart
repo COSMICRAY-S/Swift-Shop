@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:swift_shop/models/user_model.dart';
+import 'package:swift_shop/screens/auth-ui/signin-screen.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 
 class ForgetPasswordController extends GetxController {
@@ -19,15 +20,17 @@ class ForgetPasswordController extends GetxController {
       EasyLoading.show(status: "Please wait...");
 
       await _auth.sendPasswordResetEmail(email: userEmail);
-      Get.snackbar("error", "Password reset link sent to $userEmail",
+      Get.snackbar(
+          "Request sent successfully", "Password reset link sent to $userEmail",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: AppConstant.appSeconderyColor,
           colorText: AppConstant.appTextColor);
+      Get.offAll(SigninScreen());
 
       EasyLoading.dismiss();
     } on FirebaseException catch (e) {
       EasyLoading.dismiss();
-      Get.snackbar("Request sent succesfully", "$e",
+      Get.snackbar("Error", "$e",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: AppConstant.appSeconderyColor,
           colorText: AppConstant.appTextColor);

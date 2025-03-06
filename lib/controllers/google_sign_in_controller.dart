@@ -4,10 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:swift_shop/controllers/device-token-controller.dart';
 import 'package:swift_shop/models/user_model.dart';
 import 'package:swift_shop/screens/user-panel/main-screen.dart';
 
@@ -16,6 +15,8 @@ class GoogleSignInController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> signInWithGoogle() async {
+    final GetDeviceTokenController? getDeviceTokenController =
+        Get.put(GetDeviceTokenController());
     try {
       final GoogleSignInAccount? googleSignInAccount =
           await googleSignIn.signIn();
@@ -42,7 +43,7 @@ class GoogleSignInController extends GetxController {
               email: user.email.toString(),
               phone: user.phoneNumber.toString(),
               userImg: user.photoURL.toString(),
-              userDeviceToken: '',
+              userDeviceToken: getDeviceTokenController!.deviceToken.toString(),
               country: '',
               userAddress: '',
               street: '',
@@ -57,7 +58,6 @@ class GoogleSignInController extends GetxController {
               .set(userModel.toMap());
 
           EasyLoading.dismiss();
-
           Get.offAll(() => const MainScreen());
         }
       }

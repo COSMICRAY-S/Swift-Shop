@@ -3,13 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
-//import 'package:get/get_core/src/get_main.dart';
-//import 'package:get/get_instance/get_instance.dart';
-//import 'package:get/get_navigation/get_navigation.dart';
 import 'package:lottie/lottie.dart';
 import '../../controllers/forget-password-controller.dart';
 import '../../utils/app-constant.dart';
-import 'SignUp-screen.dart';
 
 class FogetPasswordScreen extends StatefulWidget {
   const FogetPasswordScreen({super.key});
@@ -73,16 +69,6 @@ class _FogetPasswordScreenState extends State<FogetPasswordScreen> {
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 15.0),
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "Forget Password?",
-                  style: TextStyle(
-                      color: AppConstant.appSeconderyColor,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
               SizedBox(
                 height: Get.height / 20,
               ),
@@ -96,7 +82,7 @@ class _FogetPasswordScreenState extends State<FogetPasswordScreen> {
                   ),
                   child: TextButton(
                     child: Text(
-                      "SIGN IN",
+                      "FORGET",
                       style: TextStyle(
                           color: AppConstant.appTextColor,
                           fontWeight: FontWeight.bold),
@@ -109,36 +95,14 @@ class _FogetPasswordScreenState extends State<FogetPasswordScreen> {
                             snackPosition: SnackPosition.BOTTOM,
                             backgroundColor: AppConstant.appSeconderyColor,
                             colorText: AppConstant.appTextColor);
-                      } else {}
+                      } else {
+                        String email = userEmail.text.trim();
+                        forgetPasswordController.forgetPasswordMethod(email);
+                      }
                     },
                   ),
                 ),
               ),
-              SizedBox(
-                height: Get.height / 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Dont have an account? ",
-                    style: TextStyle(
-                      color: AppConstant.appSeconderyColor,
-                      fontSize: 14.0,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Get.offAll(() => SignUpScreen()),
-                    child: Text(
-                      "Sign Up",
-                      style: TextStyle(
-                          color: const Color.fromARGB(255, 0, 188, 13),
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
         ),

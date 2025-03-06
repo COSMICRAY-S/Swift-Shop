@@ -1,16 +1,14 @@
-// ignore_for_file: avoid_unnecessary_containers
+// ignore_for_file: avoid_unnecessary_containers, unnecessary_null_comparison
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/get_instance.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:lottie/lottie.dart';
 import 'package:swift_shop/controllers/sign-in-controller.dart';
+import 'package:swift_shop/screens/admin-panel/admin-main-screen.dart';
 import 'package:swift_shop/screens/user-panel/main-screen.dart';
+import '../../controllers/get-user-data-controller.dart';
 import '../../utils/app-constant.dart';
 import 'SignUp-screen.dart';
 import 'forget-password-screen.dart';
@@ -24,6 +22,8 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   final SignInController signInController = Get.put(SignInController());
+  final GetUserDataController getUserDataController =
+      Get.put(GetUserDataController());
   TextEditingController userEmail = TextEditingController();
   TextEditingController userPassword = TextEditingController();
   @override
@@ -145,33 +145,62 @@ class _SigninScreenState extends State<SigninScreen> {
                       String password = userPassword.text.trim();
 
                       if (email.isEmpty || password.isEmpty) {
-                        Get.snackbar("Error", "Please enter all details",
-                            snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: AppConstant.appSeconderyColor,
-                            colorText: AppConstant.appTextColor);
+                        Get.snackbar(
+                          "Error",
+                          "Please enter all details",
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: AppConstant.appSeconderyColor,
+                          colorText: AppConstant.appTextColor,
+                        );
                       } else {
                         UserCredential? userCredential = await signInController
                             .signInMethod(email, password);
 
+                        var userData = await getUserDataController
+                            .getUserData(userCredential!.user!.uid);
+
                         if (userCredential != null) {
                           if (userCredential.user!.emailVerified) {
-                            Get.snackbar("Success", "Login Successfully.",
+                            //
+                            if (userData[0]['isAdmin'] == true) {
+                              //
+                              Get.snackbar(
+                                "Succes Admin Login",
+                                "Welcome to admin panel.",
                                 snackPosition: SnackPosition.BOTTOM,
                                 backgroundColor: AppConstant.appSeconderyColor,
-                                colorText: AppConstant.appTextColor);
-                            Get.offAll(() => MainScreen());
+                                colorText: AppConstant.appTextColor,
+                              );
+                              //jodi admin hoy
+
+                              Get.offAll(() => AdminMainScreen());
+                            } else {
+                              //jodi admin na hhoy tahole user panel a chole asbe
+                              Get.offAll(() => MainScreen());
+                              Get.snackbar(
+                                  "Success User Login", "Login Successfully.",
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor:
+                                      AppConstant.appSeconderyColor,
+                                  colorText: AppConstant.appTextColor);
+                            }
                           } else {
-                            Get.snackbar("Error",
-                                "Please verify your email before log in.",
-                                snackPosition: SnackPosition.BOTTOM,
-                                backgroundColor: AppConstant.appSeconderyColor,
-                                colorText: AppConstant.appTextColor);
-                          }
-                        } else {
-                          Get.snackbar("Error", "Please try again.",
+                            Get.snackbar(
+                              "Error",
+                              "Please verify your email before login.",
                               snackPosition: SnackPosition.BOTTOM,
                               backgroundColor: AppConstant.appSeconderyColor,
-                              colorText: AppConstant.appTextColor);
+                              colorText: AppConstant.appTextColor,
+                            );
+                          }
+                        } else {
+                          Get.snackbar(
+                            "Error",
+                            "Please try again.",
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: AppConstant.appSeconderyColor,
+                            colorText: AppConstant.appTextColor,
+                          );
                         }
                       }
                     },
