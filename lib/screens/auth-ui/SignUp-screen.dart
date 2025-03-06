@@ -36,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: AppConstant.appSeconderyColor,
+          backgroundColor: AppConstant.appMainColor,
           title: Text(
             "Sign Up",
             style: TextStyle(color: AppConstant.appTextColor),
@@ -203,7 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             password.isEmpty) {
                           Get.snackbar("Error", "Please enter all details",
                               snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: AppConstant.appSeconderyColor,
+                              backgroundColor: AppConstant.appMainColor,
                               colorText: AppConstant.appTextColor);
                         } else {
                           UserCredential? userCredential =
@@ -232,7 +232,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Text(
                       "Already have an account? ",
                       style: TextStyle(
-                        color: AppConstant.appSeconderyColor,
+                        color: AppConstant.appMainColor,
+                        fontSize: 14.0,
                       ),
                     ),
                     GestureDetector(

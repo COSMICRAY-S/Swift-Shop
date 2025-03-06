@@ -20,7 +20,7 @@ class WelcomeScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: AppConstant.appSeconderyColor,
+        backgroundColor: AppConstant.appMainColor,
         title: Text(
           "Welcome to Swift Shop",
           style: TextStyle(color: AppConstant.appTextColor),
@@ -31,7 +31,7 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              child: Lottie.asset('assets/images/splash-icon.json'),
+              child: Lottie.asset('assets/images/cartLot.json'),
             ),
             Container(
                 margin: EdgeInsets.only(top: 20.0),
@@ -77,7 +77,7 @@ class WelcomeScreen extends StatelessWidget {
                 width: Get.width / 1.2,
                 height: Get.height / 12,
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(248, 183, 0, 0),
+                  color: AppConstant.appMainColor,
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 child: TextButton.icon(

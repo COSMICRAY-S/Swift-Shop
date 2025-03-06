@@ -1,31 +1,28 @@
-// ignore_for_file: avoid_unnecessary_containers
+// ignore_for_file: avoid_unnecessary_containers, file_names
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/get_instance.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+//import 'package:get/get_core/src/get_main.dart';
+//import 'package:get/get_instance/get_instance.dart';
+//import 'package:get/get_navigation/get_navigation.dart';
 import 'package:lottie/lottie.dart';
-import 'package:swift_shop/controllers/sign-in-controller.dart';
-import 'package:swift_shop/screens/user-panel/main-screen.dart';
+import '../../controllers/forget-password-controller.dart';
 import '../../utils/app-constant.dart';
 import 'SignUp-screen.dart';
-import 'forget-password-screen.dart';
 
-class SigninScreen extends StatefulWidget {
-  const SigninScreen({super.key});
+class FogetPasswordScreen extends StatefulWidget {
+  const FogetPasswordScreen({super.key});
 
   @override
-  State<SigninScreen> createState() => _SigninScreenState();
+  State<FogetPasswordScreen> createState() => _FogetPasswordScreenState();
 }
 
-class _SigninScreenState extends State<SigninScreen> {
-  final SignInController signInController = Get.put(SignInController());
+class _FogetPasswordScreenState extends State<FogetPasswordScreen> {
+  final ForgetPasswordController forgetPasswordController =
+      Get.put(ForgetPasswordController());
   TextEditingController userEmail = TextEditingController();
-  TextEditingController userPassword = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
@@ -35,7 +32,7 @@ class _SigninScreenState extends State<SigninScreen> {
           centerTitle: true,
           backgroundColor: AppConstant.appMainColor,
           title: Text(
-            "Sign in",
+            "Forget Password",
             style: TextStyle(color: AppConstant.appTextColor),
           ),
         ),
@@ -77,49 +74,13 @@ class _SigninScreenState extends State<SigninScreen> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 5.0),
-                width: Get.width,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Obx(
-                    () => TextFormField(
-                      controller: userPassword,
-                      obscureText: signInController.isPasswordVisible.value,
-                      cursorColor: AppConstant.appSeconderyColor,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
-                        hintText: "Password",
-                        prefixIcon: Icon(Icons.password),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            signInController.isPasswordVisible.toggle();
-                          },
-                          child: signInController.isPasswordVisible.value
-                              ? Icon(Icons.visibility_off)
-                              : Icon(Icons.visibility),
-                        ),
-                        contentPadding: EdgeInsets.only(top: 2.0, bottom: 8.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
                 margin: EdgeInsets.symmetric(horizontal: 15.0),
                 alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    Get.to(() => FogetPasswordScreen());
-                  },
-                  child: Text(
-                    "Forget Password?",
-                    style: TextStyle(
-                        color: AppConstant.appSeconderyColor,
-                        fontWeight: FontWeight.bold),
-                  ),
+                child: Text(
+                  "Forget Password?",
+                  style: TextStyle(
+                      color: AppConstant.appSeconderyColor,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(
@@ -142,38 +103,13 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                     onPressed: () async {
                       String email = userEmail.text.trim();
-                      String password = userPassword.text.trim();
 
-                      if (email.isEmpty || password.isEmpty) {
+                      if (email.isEmpty) {
                         Get.snackbar("Error", "Please enter all details",
                             snackPosition: SnackPosition.BOTTOM,
                             backgroundColor: AppConstant.appSeconderyColor,
                             colorText: AppConstant.appTextColor);
-                      } else {
-                        UserCredential? userCredential = await signInController
-                            .signInMethod(email, password);
-
-                        if (userCredential != null) {
-                          if (userCredential.user!.emailVerified) {
-                            Get.snackbar("Success", "Login Successfully.",
-                                snackPosition: SnackPosition.BOTTOM,
-                                backgroundColor: AppConstant.appSeconderyColor,
-                                colorText: AppConstant.appTextColor);
-                            Get.offAll(() => MainScreen());
-                          } else {
-                            Get.snackbar("Error",
-                                "Please verify your email before log in.",
-                                snackPosition: SnackPosition.BOTTOM,
-                                backgroundColor: AppConstant.appSeconderyColor,
-                                colorText: AppConstant.appTextColor);
-                          }
-                        } else {
-                          Get.snackbar("Error", "Please try again.",
-                              snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: AppConstant.appSeconderyColor,
-                              colorText: AppConstant.appTextColor);
-                        }
-                      }
+                      } else {}
                     },
                   ),
                 ),
