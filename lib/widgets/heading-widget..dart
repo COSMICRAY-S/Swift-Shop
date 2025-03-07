@@ -31,7 +31,9 @@ class HeadingWidget extends StatelessWidget {
                 Text(
                   headingTitle,
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green.shade800),
                 ),
                 Text(
                   headingSubTitle,
@@ -54,7 +56,7 @@ class HeadingWidget extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(7.0),
                   child: Text(
                     buttonText,
                     style: TextStyle(

@@ -37,7 +37,7 @@ class CategoriesWidget extends StatelessWidget {
 
         if (snapshot.data != null) {
           return Container(
-            height: Get.height / 5,
+            height: Get.height / 6.5,
             child: ListView.builder(
               itemCount: snapshot.data!.docs.length,
               shrinkWrap: true,
@@ -67,9 +67,9 @@ class CategoriesWidget extends StatelessWidget {
                               style: TextStyle(fontSize: 14.0),
                             ),
                           ),
-                          description: Center(
-                            child: Text('🛍🛒'),
-                          ),
+                          // description: Center(
+                          //   child: Text('🛍🛒'),
+                          // ),
                         ),
                       ),
                     ),

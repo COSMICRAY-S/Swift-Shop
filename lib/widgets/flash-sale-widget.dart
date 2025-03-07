@@ -1,4 +1,4 @@
-// ignore_for_file: sized_box_for_whitespace, avoid_unnecessary_containers
+// ignore_for_file: sized_box_for_whitespace, avoid_unnecessary_containers, unnecessary_string_interpolations
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +7,7 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:image_card/image_card.dart';
 import 'package:swift_shop/models/product-model.dart';
+import 'package:swift_shop/utils/app-constant.dart';
 
 class FlashSaleWidgewt extends StatelessWidget {
   const FlashSaleWidgewt({super.key});
@@ -40,7 +41,7 @@ class FlashSaleWidgewt extends StatelessWidget {
 
         if (snapshot.data != null) {
           return Container(
-            height: Get.height / 4.5,
+            height: Get.height / 5,
             child: ListView.builder(
               itemCount: snapshot.data!.docs.length,
               shrinkWrap: true,
@@ -75,10 +76,10 @@ class FlashSaleWidgewt extends StatelessWidget {
                       child: Container(
                         child: FillImageCard(
                           borderRadius: 20.0,
-                          width: Get.width / 4.0,
+                          width: Get.width / 3.5,
                           heightImage: Get.height / 12,
                           imageProvider: CachedNetworkImageProvider(
-                            productModel.productImages[1],
+                            productModel.productImages[0],
                           ),
                           title: Center(
                             child: Text(
@@ -90,8 +91,18 @@ class FlashSaleWidgewt extends StatelessWidget {
                           footer: Row(
                             children: [
                               Text(
-                                "Taka ${productModel.fullPrice}",
+                                "TK. ${productModel.salePrice}",
                                 style: TextStyle(fontSize: 14.0),
+                              ),
+                              SizedBox(
+                                width: 2.0,
+                              ),
+                              Text(
+                                "${productModel.fullPrice}",
+                                style: TextStyle(
+                                    color: AppConstant.appSeconderyColor,
+                                    fontSize: 12.0,
+                                    decoration: TextDecoration.lineThrough),
                               ),
                             ],
                           ),

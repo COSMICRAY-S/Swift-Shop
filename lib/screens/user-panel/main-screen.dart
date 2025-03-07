@@ -10,6 +10,7 @@ import '../../widgets/cateegory-widget.dart';
 import '../../widgets/custom-drawer-widget.dart';
 import '../../widgets/flash-sale-widget.dart';
 import '../../widgets/heading-widget..dart';
+import 'all-categories-screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -53,7 +54,7 @@ class MainScreen extends StatelessWidget {
               HeadingWidget(
                 headingTitle: "Categories",
                 headingSubTitle: "According to your budget",
-                onTAP: () {},
+                onTAP: () => Get.to(() => AllCategoriesScreen()),
                 buttonText: "See More>>",
               ),
 
