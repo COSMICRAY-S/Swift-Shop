@@ -60,7 +60,7 @@ class HeadingWidget extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 12.0,
-                        color: AppConstant.appMainColor),
+                        color: AppConstant.appSeconderyColor),
                   ),
                 ),
               ),

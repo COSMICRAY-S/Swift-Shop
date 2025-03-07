@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 import 'package:swift_shop/widgets/banner-widget.dart';
-import 'package:swift_shop/widgets/custom-drawer-widget.dart';
 import 'package:get/get.dart';
 
+import '../../widgets/cateegory-widget.dart';
+import '../../widgets/custom-drawer-widget.dart';
+import '../../widgets/flash-sale-widget.dart';
 import '../../widgets/heading-widget..dart';
 
 class MainScreen extends StatelessWidget {
@@ -41,10 +43,12 @@ class MainScreen extends StatelessWidget {
               SizedBox(
                 height: Get.height / 90.0,
               ),
-              Text("🥰🥰🥰"),
+              Text("💥Darun Offer🔥"),
+              SizedBox(
+                height: Get.height / 100,
+              ),
               //banner
               BannerWidget(),
-
               //
               HeadingWidget(
                 headingTitle: "Categories",
@@ -53,12 +57,16 @@ class MainScreen extends StatelessWidget {
                 buttonText: "See More>>",
               ),
 
+              CategoriesWidget(),
+
               HeadingWidget(
                 headingTitle: "Flash sale",
-                headingSubTitle: "",
+                headingSubTitle: "Discount up to 75%",
                 onTAP: () {},
                 buttonText: "See More>>",
               ),
+
+              FlashSaleWidgewt(),
             ],
           ),
         ),
