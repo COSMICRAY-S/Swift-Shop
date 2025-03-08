@@ -51,9 +51,9 @@ class _SpalshScreenState extends State<SpalshScreen> {
   Widget build(BuildContext context) {
     //final size = MediaQuery.of(context).size;    //er poriborte getx uuse korte pari
     return Scaffold(
-      backgroundColor: AppConstant.appSeconderyColor,
+      backgroundColor: AppConstant.appMainColor,
       appBar: AppBar(
-        backgroundColor: AppConstant.appSeconderyColor,
+        backgroundColor: AppConstant.appMainColor,
         elevation: 0, //jathe appbar dekha na jay
       ),
       body: Container(
@@ -63,7 +63,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
           children: [
             Expanded(
               child: Container(
-                child: Lottie.asset('assets/images/splash-icon.json'),
+                child: Lottie.asset('assets/images/Shopping.json'),
               ),
             ),
             Container(

@@ -2,15 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swift_shop/screens/user-panel/all-products-screen.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 import 'package:swift_shop/widgets/banner-widget.dart';
 import 'package:get/get.dart';
 
+import '../../widgets/all-products-widget.dart';
 import '../../widgets/cateegory-widget.dart';
 import '../../widgets/custom-drawer-widget.dart';
 import '../../widgets/flash-sale-widget.dart';
 import '../../widgets/heading-widget..dart';
 import 'all-categories-screen.dart';
+import 'all-flash-sale-product-screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -63,11 +66,20 @@ class MainScreen extends StatelessWidget {
               HeadingWidget(
                 headingTitle: "Flash sale",
                 headingSubTitle: "Discount up to 75%",
-                onTAP: () {},
+                onTAP: () => Get.to(() => AllFlashSaleScreen()),
                 buttonText: "See More>>",
               ),
 
               FlashSaleWidgewt(),
+
+              HeadingWidget(
+                headingTitle: "All Products",
+                headingSubTitle: "",
+                onTAP: () => Get.to(() => AllProductsScreen()),
+                buttonText: "See More>>",
+              ),
+
+              AllProductWidget(),
             ],
           ),
         ),

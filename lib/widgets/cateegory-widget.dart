@@ -7,6 +7,7 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:image_card/image_card.dart';
 import 'package:swift_shop/models/categories-model.dart';
+import 'package:swift_shop/screens/user-panel/single-category-product-screen.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({super.key});
@@ -52,24 +53,31 @@ class CategoriesWidget extends StatelessWidget {
                 );
                 return Row(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Container(
-                        child: FillImageCard(
-                          borderRadius: 20.0,
-                          width: Get.width / 4.0,
-                          heightImage: Get.height / 12,
-                          imageProvider: CachedNetworkImageProvider(
-                              categoriesModel.categoryImg),
-                          title: Center(
-                            child: Text(
-                              categoriesModel.categoryName,
-                              style: TextStyle(fontSize: 14.0),
+                    GestureDetector(
+                      //
+                      onTap: () => Get.to(() => SingleCategoryProductsScreen(
+                          categoryId: categoriesModel.categoryId)),
+
+                      //
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Container(
+                          child: FillImageCard(
+                            borderRadius: 20.0,
+                            width: Get.width / 4.0,
+                            heightImage: Get.height / 12,
+                            imageProvider: CachedNetworkImageProvider(
+                                categoriesModel.categoryImg),
+                            title: Center(
+                              child: Text(
+                                categoriesModel.categoryName,
+                                style: TextStyle(fontSize: 14.0),
+                              ),
                             ),
+                            // description: Center(
+                            //   child: Text('🛍🛒'),
+                            // ),
                           ),
-                          // description: Center(
-                          //   child: Text('🛍🛒'),
-                          // ),
                         ),
                       ),
                     ),
