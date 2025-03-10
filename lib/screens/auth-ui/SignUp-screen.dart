@@ -224,7 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               colorText: AppConstant.appTextColor,
                             );
 
-                            FirebaseAuth.instance.signOut();
+                            //FirebaseAuth.instance.signOut();
                             Get.offAll(() => SigninScreen());
                           }
                         }

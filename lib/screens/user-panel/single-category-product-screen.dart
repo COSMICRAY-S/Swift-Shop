@@ -9,6 +9,8 @@ import 'package:image_card/image_card.dart';
 import 'package:swift_shop/models/product-model.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 
+import 'product-details-screen.dart';
+
 class SingleCategoryProductsScreen extends StatefulWidget {
   String categoryId;
   SingleCategoryProductsScreen({super.key, required this.categoryId});
@@ -24,6 +26,7 @@ class _SingleCategoryProductsScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppConstant.appTextColor),
         backgroundColor: AppConstant.appMainColor,
         title: Text(
           'Products',
@@ -95,20 +98,26 @@ class _SingleCategoryProductsScreenState
                 // );
                 return Row(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Container(
-                        child: FillImageCard(
-                          borderRadius: 20.0,
-                          width: Get.width / 2.2,
-                          heightImage: Get.height / 9,
-                          imageProvider: CachedNetworkImageProvider(
-                              productModel.productImages[0]),
-                          title: Center(
-                            child: Text(
-                              productModel.productName,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 14.0),
+                    GestureDetector(
+                      //
+                      onTap: () => Get.to(() =>
+                          ProductDetailsScreen(productModel: productModel)),
+                      //
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Container(
+                          child: FillImageCard(
+                            borderRadius: 20.0,
+                            width: Get.width / 2.2,
+                            heightImage: Get.height / 9,
+                            imageProvider: CachedNetworkImageProvider(
+                                productModel.productImages[0]),
+                            title: Center(
+                              child: Text(
+                                productModel.productName,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 14.0),
+                              ),
                             ),
                           ),
                         ),

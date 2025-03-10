@@ -10,6 +10,8 @@ import 'package:image_card/image_card.dart';
 import 'package:swift_shop/models/product-model.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 
+import 'product-details-screen.dart';
+
 class AllProductsScreen extends StatelessWidget {
   const AllProductsScreen({super.key});
 
@@ -17,6 +19,7 @@ class AllProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppConstant.appTextColor),
         backgroundColor: AppConstant.appMainColor,
         title: Text(
           "All Products",
@@ -83,9 +86,11 @@ class AllProductsScreen extends StatelessWidget {
                 return Row(
                   children: [
                     GestureDetector(
-                      //   onTap: () => Get.to(() => SingleCategoryProductsScreen(
-                      //         categoryId: categoriesModel.categoryId,
-                      //       )),
+                      //
+                      onTap: () => Get.to(() =>
+                          ProductDetailsScreen(productModel: productModel)),
+                      //
+
                       child: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Container(
@@ -106,7 +111,7 @@ class AllProductsScreen extends StatelessWidget {
                             ),
 
                             footer: Center(
-                              child: Text("TK: ${productModel.salePrice}"),
+                              child: Text("TK: ${productModel.fullPrice}"),
                             ),
 
                             // description: Center(

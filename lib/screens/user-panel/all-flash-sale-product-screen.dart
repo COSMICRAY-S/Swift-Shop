@@ -9,6 +9,7 @@ import 'package:image_card/image_card.dart';
 import 'package:swift_shop/models/product-model.dart';
 
 import '../../utils/app-constant.dart';
+import 'product-details-screen.dart';
 
 class AllFlashSaleScreen extends StatefulWidget {
   const AllFlashSaleScreen({super.key});
@@ -22,9 +23,10 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppConstant.appTextColor),
         backgroundColor: AppConstant.appMainColor,
         title: Text(
-          "All Flash Sale Products",
+          " 😍💞 𝙁𝙡𝙖𝙨𝙝 𝙎𝙖𝙡𝙚 💏💖",
           style: TextStyle(color: AppConstant.appTextColor),
         ),
       ),
@@ -94,9 +96,10 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
                 return Row(
                   children: [
                     GestureDetector(
-                      //   onTap: () => Get.to(() => SingleCategoryProductsScreen(
-                      //         categoryId: categoriesModel.categoryId,
-                      //       )),
+                      //
+                      onTap: () => Get.to(() =>
+                          ProductDetailsScreen(productModel: productModel)),
+                      //
                       child: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Container(

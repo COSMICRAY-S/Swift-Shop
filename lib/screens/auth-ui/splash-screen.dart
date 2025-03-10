@@ -10,7 +10,6 @@ import 'package:swift_shop/controllers/get-user-data-controller.dart';
 import 'package:swift_shop/screens/admin-panel/admin-main-screen.dart';
 import 'package:swift_shop/screens/auth-ui/welcome-screen.dart';
 import 'package:swift_shop/screens/user-panel/main-screen.dart';
-//import 'package:swift_shop/screens/user-panel/main-screen.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 
 class SpalshScreen extends StatefulWidget {

@@ -8,6 +8,8 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:image_card/image_card.dart';
 import 'package:swift_shop/models/product-model.dart';
 
+import '../screens/user-panel/product-details-screen.dart';
+
 class AllProductWidget extends StatelessWidget {
   const AllProductWidget({super.key});
 
@@ -73,9 +75,10 @@ class AllProductWidget extends StatelessWidget {
               return Row(
                 children: [
                   GestureDetector(
-                    //   onTap: () => Get.to(() => SingleCategoryProductsScreen(
-                    //         categoryId: categoriesModel.categoryId,
-                    //       )),
+                    //
+                    onTap: () => Get.to(
+                        () => ProductDetailsScreen(productModel: productModel)),
+                    //
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Container(
@@ -96,7 +99,7 @@ class AllProductWidget extends StatelessWidget {
                           ),
 
                           footer: Center(
-                            child: Text("TK: ${productModel.salePrice}"),
+                            child: Text("TK: ${productModel.fullPrice}"),
                           ),
 
                           // description: Center(

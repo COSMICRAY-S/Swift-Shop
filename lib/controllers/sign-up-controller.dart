@@ -9,7 +9,7 @@ import 'package:swift_shop/utils/app-constant.dart';
 
 class SignUpController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   //for password visibility
   var isPasswordVisible = false.obs;
@@ -32,7 +32,7 @@ class SignUpController extends GetxController {
           await _auth.createUserWithEmailAndPassword(
         email: userEmail,
         password: userPassword,
-      ); //
+      );
       //jokhoni user toiri hobe ekhane asbe then verification hbe
       await userCredential.user!.sendEmailVerification();
       UserModel userModel = UserModel(
@@ -52,7 +52,7 @@ class SignUpController extends GetxController {
       );
 
       //add data into database
-      _firestore
+      firestore
           .collection("users")
           .doc(userCredential.user!.uid)
           .set(userModel.toMap());

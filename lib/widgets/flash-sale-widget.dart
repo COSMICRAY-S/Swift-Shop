@@ -9,6 +9,8 @@ import 'package:image_card/image_card.dart';
 import 'package:swift_shop/models/product-model.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 
+import '../screens/user-panel/product-details-screen.dart';
+
 class FlashSaleWidgewt extends StatelessWidget {
   const FlashSaleWidgewt({super.key});
 
@@ -71,40 +73,46 @@ class FlashSaleWidgewt extends StatelessWidget {
                 // );
                 return Row(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Container(
-                        child: FillImageCard(
-                          borderRadius: 20.0,
-                          width: Get.width / 3.5,
-                          heightImage: Get.height / 12,
-                          imageProvider: CachedNetworkImageProvider(
-                            productModel.productImages[0],
-                          ),
-                          title: Center(
-                            child: Text(
-                              productModel.productName,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 12.0),
+                    GestureDetector(
+                      //
+                      onTap: () => Get.to(() =>
+                          ProductDetailsScreen(productModel: productModel)),
+                      //
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Container(
+                          child: FillImageCard(
+                            borderRadius: 20.0,
+                            width: Get.width / 3.5,
+                            heightImage: Get.height / 12,
+                            imageProvider: CachedNetworkImageProvider(
+                              productModel.productImages[0],
                             ),
-                          ),
-                          footer: Row(
-                            children: [
-                              Text(
-                                "TK. ${productModel.salePrice}",
-                                style: TextStyle(fontSize: 14.0),
+                            title: Center(
+                              child: Text(
+                                productModel.productName,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 12.0),
                               ),
-                              SizedBox(
-                                width: 2.0,
-                              ),
-                              Text(
-                                "${productModel.fullPrice}",
-                                style: TextStyle(
-                                    color: AppConstant.appSeconderyColor,
-                                    fontSize: 12.0,
-                                    decoration: TextDecoration.lineThrough),
-                              ),
-                            ],
+                            ),
+                            footer: Row(
+                              children: [
+                                Text(
+                                  "TK. ${productModel.salePrice}",
+                                  style: TextStyle(fontSize: 14.0),
+                                ),
+                                SizedBox(
+                                  width: 2.0,
+                                ),
+                                Text(
+                                  "${productModel.fullPrice}",
+                                  style: TextStyle(
+                                      color: AppConstant.appSeconderyColor,
+                                      fontSize: 12.0,
+                                      decoration: TextDecoration.lineThrough),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
