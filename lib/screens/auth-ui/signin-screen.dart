@@ -161,7 +161,8 @@ class _SigninScreenState extends State<SigninScreen> {
 
                         if (userCredential != null) {
                           if (userCredential.user!.emailVerified) {
-                            //
+                            Get.offAll(() => MainScreen());
+
                             if (userData[0]['isAdmin'] == true) {
                               //
                               Get.snackbar(

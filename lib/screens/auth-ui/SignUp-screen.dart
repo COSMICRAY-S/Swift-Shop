@@ -48,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    "Welcome to my app",
+                    "Resister Yourself",
                     style: TextStyle(
                         color: const Color.fromARGB(255, 4, 255, 0),
                         fontSize: 18.0,
@@ -195,7 +195,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                         if (name.isEmpty ||
                             email.isEmpty ||
-                            phone.isExcelFileName ||
+                            phone.isEmpty ||
                             city.isEmpty ||
                             password.isEmpty) {
                           Get.snackbar(
@@ -224,7 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               colorText: AppConstant.appTextColor,
                             );
 
-                            //FirebaseAuth.instance.signOut();
+                            FirebaseAuth.instance.signOut();
                             Get.offAll(() => SigninScreen());
                           }
                         }

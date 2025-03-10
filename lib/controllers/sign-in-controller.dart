@@ -26,17 +26,18 @@ class SignInController extends GetxController {
         email: userEmail,
         password: userPassword,
       ); //
-      //jokhoni user toiri hobe ekhane asbe then verification hbe
-      await userCredential.user!.sendEmailVerification();
 
       EasyLoading.dismiss();
       return userCredential;
     } on FirebaseException catch (e) {
       EasyLoading.dismiss();
-      Get.snackbar("error", "$e",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: AppConstant.appSeconderyColor,
-          colorText: AppConstant.appTextColor);
+      Get.snackbar(
+        "error",
+        "$e",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: AppConstant.appSeconderyColor,
+        colorText: AppConstant.appTextColor,
+      );
     }
   }
 }

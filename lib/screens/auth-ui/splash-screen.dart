@@ -26,6 +26,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 4), () {
+      //Get.to(() => WelcomeScreen());
       loggedin(context);
     });
   }

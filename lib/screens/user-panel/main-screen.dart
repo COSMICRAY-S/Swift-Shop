@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swift_shop/screens/user-panel/all-products-screen.dart';
+import 'package:swift_shop/screens/user-panel/cart-screen.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 import 'package:swift_shop/widgets/banner-widget.dart';
 import 'package:get/get.dart';
@@ -37,6 +38,15 @@ class MainScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
+        actions: [
+          GestureDetector(
+            onTap: () => Get.to(() => CartScreen()),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Icon(Icons.shopping_cart),
+            ),
+          ),
+        ],
       ),
       drawer: DrawerWidget(),
       body: SingleChildScrollView(

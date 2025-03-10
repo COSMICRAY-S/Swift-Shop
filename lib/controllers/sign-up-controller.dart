@@ -4,12 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:swift_shop/models/user_model.dart';
 import 'package:swift_shop/utils/app-constant.dart';
+
+import '../models/user_model.dart';
 
 class SignUpController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //for password visibility
   var isPasswordVisible = false.obs;
@@ -47,24 +48,38 @@ class SignUpController extends GetxController {
         street: '',
         isAdmin: false,
         isActive: true,
-        createdOn: DateTime.now,
+        createdOn: DateTime.now(),
         city: userCity,
       );
 
       //add data into database
-      firestore
+      _firestore
           .collection("users")
           .doc(userCredential.user!.uid)
           .set(userModel.toMap());
+
+      //try {
+      //   await _firestore
+      //       .collection("users")
+      //       .doc(userCredential.user!.uid)
+      //       .set(userModel.toMap());
+      //   print("User successfully added to Firestore");
+      // } catch (e) {
+      //   print("Error writing to Firestore: $e");
+      // }
+
       EasyLoading.dismiss();
       //
       return userCredential;
     } on FirebaseException catch (e) {
       EasyLoading.dismiss();
-      Get.snackbar("error", "$e",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: AppConstant.appSeconderyColor,
-          colorText: AppConstant.appTextColor);
+      Get.snackbar(
+        "error",
+        "$e",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: AppConstant.appSeconderyColor,
+        colorText: AppConstant.appTextColor,
+      );
     }
   }
 }

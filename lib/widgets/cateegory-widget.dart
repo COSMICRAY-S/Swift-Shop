@@ -8,6 +8,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:image_card/image_card.dart';
 import 'package:swift_shop/models/categories-model.dart';
 import 'package:swift_shop/screens/user-panel/single-category-product-screen.dart';
+import 'package:swift_shop/utils/app-constant.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({super.key});
@@ -63,6 +64,7 @@ class CategoriesWidget extends StatelessWidget {
                         padding: EdgeInsets.all(5.0),
                         child: Container(
                           child: FillImageCard(
+                            color: AppConstant.appStatusBarColor,
                             borderRadius: 20.0,
                             width: Get.width / 4.0,
                             heightImage: Get.height / 12,
