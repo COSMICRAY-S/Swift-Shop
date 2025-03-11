@@ -1,12 +1,17 @@
-// ignore_for_file: must_be_immutable, avoid_unnecessary_containers
+// ignore_for_file: must_be_immutable, avoid_unnecessary_containers, avoid_print
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:swift_shop/models/product-model.dart';
-import 'package:swift_shop/utils/app-constant.dart';
+
+import '../../models/cart-model.dart';
+import '../../models/product-model.dart';
+import '../../utils/app-constant.dart';
+import 'cart-screen.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   ProductModel productModel;
@@ -17,6 +22,8 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +34,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           "Product Details",
           style: TextStyle(color: AppConstant.appTextColor),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () => Get.to(() => CartScreen()),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Icon(Icons.shopping_cart),
+            ),
+          ),
+        ],
       ),
       body: Container(
         child: Column(
@@ -130,61 +146,62 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Material(
-                              child: Container(
-                                width: Get.width / 3,
-                                height: Get.height / 18,
-                                decoration: BoxDecoration(
-                                  color: AppConstant.appMainColor,
-                                  borderRadius: BorderRadius.circular(20.0),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Material(
+                            child: Container(
+                              width: Get.width / 3,
+                              height: Get.height / 18,
+                              decoration: BoxDecoration(
+                                color: AppConstant.appMainColor,
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: TextButton(
+                                child: Text(
+                                  "Buy now",
+                                  style: TextStyle(
+                                      color: AppConstant.appTextColor,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                child: TextButton(
-                                  child: Text(
-                                    "Buy now",
-                                    style: TextStyle(
-                                        color: AppConstant.appTextColor,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () {
-                                    //Get.to(() => SigninScreen());
-                                  },
-                                ),
+                                onPressed: () {
+                                  //Get.to(() => SigninScreen());
+                                },
                               ),
                             ),
+                          ),
 
-                            //
-                            SizedBox(
-                              width: Get.width / 30,
-                            ),
-                            Material(
-                              child: Container(
-                                width: Get.width / 3,
-                                height: Get.height / 18,
-                                decoration: BoxDecoration(
-                                  color: AppConstant.appMainColor,
-                                  borderRadius: BorderRadius.circular(20.0),
+                          //
+                          SizedBox(
+                            width: Get.width / 30,
+                          ),
+                          Material(
+                            child: Container(
+                              width: Get.width / 3,
+                              height: Get.height / 18,
+                              decoration: BoxDecoration(
+                                color: AppConstant.appMainColor,
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: TextButton(
+                                child: Text(
+                                  "Add to Cart",
+                                  style: TextStyle(
+                                      color: AppConstant.appTextColor,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                child: TextButton(
-                                  child: Text(
-                                    "Add to Cart",
-                                    style: TextStyle(
-                                        color: AppConstant.appTextColor,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () {
-                                    //Get.to(() => SigninScreen());
-                                  },
-                                ),
+                                onPressed: () async {
+                                  await checkProductExistance(uId: user!.uid);
+                                },
                               ),
                             ),
-                          ],
-                        )),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -193,5 +210,64 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
       ),
     );
+  }
+
+  // chech product exist or not
+  Future<void> checkProductExistance({
+    required String uId,
+    int quantityIncrement = 1,
+  }) async {
+    final DocumentReference documentReference = FirebaseFirestore.instance
+        .collection('cart')
+        .doc(uId)
+        .collection('cartOrders')
+        .doc(widget.productModel.productId.toString());
+
+    DocumentSnapshot snapshot = await documentReference.get();
+
+    if (snapshot.exists) {
+      int currentQuantity = snapshot['productQuantity'];
+      int updatedQuantity = currentQuantity + quantityIncrement;
+      double totalPrice = double.parse(widget.productModel.isSale
+              ? widget.productModel.salePrice
+              : widget.productModel.fullPrice) *
+          updatedQuantity;
+
+      await documentReference.update(
+        {
+          'productQuantity': updatedQuantity,
+          'productTotalPrice': totalPrice,
+        },
+      );
+      print("product exist");
+    } else {
+      await FirebaseFirestore.instance.collection('cart').doc(uId).set(
+        {
+          'uId': uId,
+          'createdAt': DateTime.now(),
+        },
+      );
+      CartModel cartModel = CartModel(
+        productId: widget.productModel.productId,
+        categoryId: widget.productModel.categoryId,
+        productName: widget.productModel.productName,
+        categoryName: widget.productModel.categoryName,
+        salePrice: widget.productModel.salePrice,
+        fullPrice: widget.productModel.fullPrice,
+        productImages: widget.productModel.productImages,
+        deliveryTime: widget.productModel.deliveryTime,
+        isSale: widget.productModel.isSale,
+        productDescription: widget.productModel.productDescription,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        productQuantity: 1,
+        productTotalPrice: widget.productModel.isSale == true
+            ? double.parse(widget.productModel.salePrice)
+            : double.parse(widget.productModel.fullPrice),
+      );
+
+      await documentReference.set(cartModel.toMap());
+      print("product Added");
+    }
   }
 }

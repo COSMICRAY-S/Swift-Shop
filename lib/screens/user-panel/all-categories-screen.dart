@@ -6,10 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
-import 'package:swift_shop/screens/user-panel/single-category-product-screen.dart';
-import 'package:swift_shop/utils/app-constant.dart';
 
 import '../../models/categories-model.dart';
+import '../../utils/app-constant.dart';
+import 'cart-screen.dart';
+import 'single-category-product-screen.dart';
 
 class AllCategoriesScreen extends StatefulWidget {
   const AllCategoriesScreen({super.key});
@@ -29,6 +30,15 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
           "All Categories",
           style: TextStyle(color: AppConstant.appTextColor),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () => Get.to(() => CartScreen()),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Icon(Icons.shopping_cart),
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance.collection('categories').get(),

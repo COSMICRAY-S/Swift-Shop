@@ -1,16 +1,16 @@
 // ignore_for_file: file_names, avoid_unnecessary_containers
 
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:swift_shop/controllers/get-user-data-controller.dart';
-import 'package:swift_shop/screens/admin-panel/admin-main-screen.dart';
-import 'package:swift_shop/screens/auth-ui/welcome-screen.dart';
-import 'package:swift_shop/screens/user-panel/main-screen.dart';
-import 'package:swift_shop/utils/app-constant.dart';
+
+import '../../controllers/get-user-data-controller.dart';
+import '../../utils/app-constant.dart';
+import '../admin-panel/admin-main-screen.dart';
+import '../user-panel/main-screen.dart';
+import 'welcome-screen.dart';
 
 class SpalshScreen extends StatefulWidget {
   const SpalshScreen({super.key});

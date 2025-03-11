@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
-import 'package:swift_shop/controllers/sign-up-controller.dart';
+
+import '../../controllers/sign-up-controller.dart';
 import '../../utils/app-constant.dart';
 import 'signin-screen.dart';
 

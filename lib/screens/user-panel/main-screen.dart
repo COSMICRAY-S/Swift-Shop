@@ -2,19 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swift_shop/screens/user-panel/all-products-screen.dart';
-import 'package:swift_shop/screens/user-panel/cart-screen.dart';
-import 'package:swift_shop/utils/app-constant.dart';
-import 'package:swift_shop/widgets/banner-widget.dart';
 import 'package:get/get.dart';
 
+import '../../utils/app-constant.dart';
 import '../../widgets/all-products-widget.dart';
+import '../../widgets/banner-widget.dart';
 import '../../widgets/cateegory-widget.dart';
 import '../../widgets/custom-drawer-widget.dart';
 import '../../widgets/flash-sale-widget.dart';
 import '../../widgets/heading-widget..dart';
 import 'all-categories-screen.dart';
 import 'all-flash-sale-product-screen.dart';
+import 'all-products-screen.dart';
+import 'cart-screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});

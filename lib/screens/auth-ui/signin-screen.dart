@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:swift_shop/controllers/sign-in-controller.dart';
-import 'package:swift_shop/screens/admin-panel/admin-main-screen.dart';
-import 'package:swift_shop/screens/user-panel/main-screen.dart';
+
 import '../../controllers/get-user-data-controller.dart';
+import '../../controllers/sign-in-controller.dart';
 import '../../utils/app-constant.dart';
+import '../admin-panel/admin-main-screen.dart';
+import '../user-panel/main-screen.dart';
 import 'SignUp-screen.dart';
 import 'forget-password-screen.dart';
 

@@ -6,9 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
-import 'package:swift_shop/models/product-model.dart';
 
+import '../../models/product-model.dart';
 import '../../utils/app-constant.dart';
+import 'cart-screen.dart';
 import 'product-details-screen.dart';
 
 class AllFlashSaleScreen extends StatefulWidget {
@@ -29,6 +30,16 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
           " 😍💞 𝙁𝙡𝙖𝙨𝙝 𝙎𝙖𝙡𝙚 💏💖",
           style: TextStyle(color: AppConstant.appTextColor),
         ),
+        actions: [
+          //cart er jnno
+          GestureDetector(
+            onTap: () => Get.to(() => CartScreen()),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Icon(Icons.shopping_cart),
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance

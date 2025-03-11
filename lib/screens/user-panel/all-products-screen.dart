@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:image_card/image_card.dart';
-import 'package:swift_shop/models/product-model.dart';
-import 'package:swift_shop/utils/app-constant.dart';
 
+import '../../models/product-model.dart';
+import '../../utils/app-constant.dart';
 import 'product-details-screen.dart';
 
 class AllProductsScreen extends StatelessWidget {

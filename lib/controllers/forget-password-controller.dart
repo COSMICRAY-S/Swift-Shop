@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:swift_shop/models/user_model.dart';
-import 'package:swift_shop/screens/auth-ui/signin-screen.dart';
-import 'package:swift_shop/utils/app-constant.dart';
+
+import '../screens/auth-ui/signin-screen.dart';
+import '../utils/app-constant.dart';
 
 class ForgetPasswordController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;

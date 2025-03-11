@@ -6,9 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
-import 'package:swift_shop/models/product-model.dart';
-import 'package:swift_shop/utils/app-constant.dart';
 
+import '../../models/product-model.dart';
+import '../../utils/app-constant.dart';
 import 'product-details-screen.dart';
 
 class SingleCategoryProductsScreen extends StatefulWidget {

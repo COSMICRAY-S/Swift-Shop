@@ -6,9 +6,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:swift_shop/controllers/device-token-controller.dart';
-import 'package:swift_shop/models/user_model.dart';
-import 'package:swift_shop/screens/user-panel/main-screen.dart';
+
+import '../models/user_model.dart';
+import '../screens/user-panel/main-screen.dart';
+import 'device-token-controller.dart';
 
 class GoogleSignInController extends GetxController {
   final GoogleSignIn googleSignIn = GoogleSignIn();

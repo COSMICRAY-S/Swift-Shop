@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:swift_shop/controllers/google_sign_in_controller.dart';
-import 'package:swift_shop/screens/auth-ui/signin-screen.dart';
 
+import '../../controllers/google_sign_in_controller.dart';
 import '../../utils/app-constant.dart';
+import 'signin-screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   WelcomeScreen({super.key});
