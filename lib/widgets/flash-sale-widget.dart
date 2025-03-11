@@ -64,13 +64,7 @@ class FlashSaleWidgewt extends StatelessWidget {
                   createdAt: productData['createdAt'],
                   updatedAt: productData['updatedAt'],
                 );
-                // CategoriesModel categoriesModel = CategoriesModel(
-                //   categoryId: snapshot.data!.docs[index]['categoryId'],
-                //   categoryImg: snapshot.data!.docs[index]['categoryImg'],
-                //   categoryName: snapshot.data!.docs[index]['categoryName'],
-                //   createdAt: snapshot.data!.docs[index]['createdAt'],
-                //   updatedAt: snapshot.data!.docs[index]['updatedAt'],
-                // );
+
                 return Row(
                   children: [
                     GestureDetector(
@@ -82,6 +76,7 @@ class FlashSaleWidgewt extends StatelessWidget {
                         padding: EdgeInsets.all(5.0),
                         child: Container(
                           child: FillImageCard(
+                            color: const Color.fromARGB(255, 254, 217, 212),
                             borderRadius: 20.0,
                             width: Get.width / 3.5,
                             heightImage: Get.height / 12,

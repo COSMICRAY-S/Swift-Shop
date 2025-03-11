@@ -115,6 +115,7 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
                         padding: EdgeInsets.all(8.0),
                         child: Container(
                           child: FillImageCard(
+                            color: const Color.fromARGB(255, 254, 217, 212),
                             borderRadius: 20.0,
                             width: Get.width / 2.2,
                             heightImage: Get.height / 9,
