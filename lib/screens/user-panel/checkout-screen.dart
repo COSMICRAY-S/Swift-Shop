@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print, prefer_interpolation_to_compose_strings
+// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print, prefer_interpolation_to_compose_strings, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,16 +13,15 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import '../../controllers/cart-price-controller.dart';
 import '../../models/cart-model.dart';
 import '../../utils/app-constant.dart';
-import 'checkout-screen.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+class CheckOutScreen extends StatefulWidget {
+  const CheckOutScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CheckOutScreen> createState() => _CheckOutScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CheckOutScreenState extends State<CheckOutScreen> {
   final ProductPriceController productPriceController =
       Get.put(ProductPriceController());
   User? user = FirebaseAuth.instance.currentUser;
@@ -33,7 +32,7 @@ class _CartScreenState extends State<CartScreen> {
         backgroundColor: AppConstant.appMainColor,
         iconTheme: IconThemeData(color: AppConstant.appTextColor),
         title: Text(
-          'Cart Screen',
+          'Checkout Screen',
           style: TextStyle(color: AppConstant.appTextColor),
         ),
       ),
@@ -133,73 +132,6 @@ class _CartScreenState extends State<CartScreen> {
                               "MRP: " + cartModel.productTotalPrice.toString(),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(
-                              width: Get.width / 5,
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                if (cartModel.productQuantity > 1) {
-                                  await FirebaseFirestore.instance
-                                      .collection('cart')
-                                      .doc(user!.uid)
-                                      .collection('cartOrders')
-                                      .doc(cartModel.productId)
-                                      .update(
-                                    {
-                                      'productQuantity':
-                                          cartModel.productQuantity - 1,
-                                      'productTotalPrice':
-                                          cartModel.productTotalPrice -
-                                              double.parse(cartModel.isSale
-                                                  ? cartModel.salePrice
-                                                  : cartModel.fullPrice),
-                                    },
-                                  );
-                                }
-                              },
-                              child: CircleAvatar(
-                                radius: 14.0,
-                                backgroundColor: AppConstant.appNameColor,
-                                child: Text("-"),
-                              ),
-                            ),
-                            // SizedBox(
-                            //   width: Get.width / 20,
-                            // ),
-                            Text(
-                              " Unit:" + cartModel.productQuantity.toString(),
-                              style: TextStyle(color: AppConstant.appMainColor),
-                            ),
-                            // SizedBox(
-                            //   width: Get.width / 20,
-                            // ),
-                            GestureDetector(
-                              onTap: () async {
-                                if (cartModel.productQuantity > 0) {
-                                  await FirebaseFirestore.instance
-                                      .collection('cart')
-                                      .doc(user!.uid)
-                                      .collection('cartOrders')
-                                      .doc(cartModel.productId)
-                                      .update(
-                                    {
-                                      'productQuantity':
-                                          cartModel.productQuantity + 1,
-                                      'productTotalPrice':
-                                          cartModel.productTotalPrice +
-                                              double.parse(cartModel.isSale
-                                                  ? cartModel.salePrice
-                                                  : cartModel.fullPrice),
-                                    },
-                                  );
-                                }
-                              },
-                              child: CircleAvatar(
-                                radius: 14.0,
-                                backgroundColor: AppConstant.appNameColor,
-                                child: Text("+"),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -238,19 +170,19 @@ class _CartScreenState extends State<CartScreen> {
                   width: Get.width / 3,
                   height: Get.height / 20,
                   decoration: BoxDecoration(
-                    color: AppConstant.appMainColor,
+                    color: AppConstant.appNameColor,
                     borderRadius: BorderRadius.circular(30.0),
                   ),
                   child: TextButton(
                     child: Text(
-                      "Checkout",
+                      "Confirm Order",
                       style: TextStyle(
                           color: AppConstant.appTextColor,
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      Get.to(CheckOutScreen());
+                      ShowCustomBottomSheet();
                     },
                   ),
                 ),
@@ -261,4 +193,93 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
+}
+
+void ShowCustomBottomSheet() {
+  Get.bottomSheet(
+    Container(
+      height: Get.height * 0.8,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16.0),
+        ),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+              child: Container(
+                height: 50.0,
+                child: TextFormField(
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                    ),
+                    hintStyle: TextStyle(fontSize: 12.0),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+              child: Container(
+                height: 50.0,
+                child: TextFormField(
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    labelText: 'Phone',
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                    ),
+                    hintStyle: TextStyle(fontSize: 12.0),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+              child: Container(
+                height: 50.0,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Adress',
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                    ),
+                    hintStyle: TextStyle(fontSize: 12.0),
+                  ),
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppConstant.appNameColor,
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              ),
+              onPressed: () {},
+              child: Text(
+                "Place Order",
+                style: TextStyle(
+                  color: AppConstant.appTextColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
+    backgroundColor: Colors.transparent,
+    isDismissible: true,
+    enableDrag: true,
+    elevation: 6,
+  );
 }
