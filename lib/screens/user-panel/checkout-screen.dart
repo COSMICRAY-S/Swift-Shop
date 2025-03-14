@@ -5,14 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_instance/get_instance.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/cart-price-controller.dart';
 import '../../models/cart-model.dart';
+import '../../services/geoapify_service.dart';
 import '../../utils/app-constant.dart';
+import '../auth-ui/address_search.dart';
 
 class CheckOutScreen extends StatefulWidget {
   const CheckOutScreen({super.key});
@@ -196,6 +195,20 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 }
 
 void ShowCustomBottomSheet() {
+  TextEditingController addressController = TextEditingController();
+  RxList<String> addressSuggestions = <String>[].obs;
+
+  void fetchAddressSuggestions(String query) async {
+    if (query.length > 2) {
+      // Avoid unnecessary API calls
+      List<String> suggestions =
+          await GeoapifyService.getPlaceSuggestions(query);
+      addressSuggestions.value = suggestions;
+    } else {
+      addressSuggestions.clear();
+    }
+  }
+
   Get.bottomSheet(
     Container(
       height: Get.height * 0.8,
@@ -210,53 +223,60 @@ void ShowCustomBottomSheet() {
           children: [
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-              child: Container(
-                height: 50.0,
-                child: TextFormField(
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                    ),
-                    hintStyle: TextStyle(fontSize: 12.0),
-                  ),
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: TextFormField(
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-              child: Container(
-                height: 50.0,
-                child: TextFormField(
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    labelText: 'Phone',
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                    ),
-                    hintStyle: TextStyle(fontSize: 12.0),
-                  ),
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: TextFormField(
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  labelText: 'Phone',
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-              child: Container(
-                height: 50.0,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Adress',
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 10.0,
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: addressController,
+                    onChanged: fetchAddressSuggestions,
+                    decoration: InputDecoration(
+                      labelText: 'Address',
+                      //contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                      border: OutlineInputBorder(),
                     ),
-                    hintStyle: TextStyle(fontSize: 12.0),
                   ),
-                ),
+                  Obx(() => addressSuggestions.isNotEmpty
+                      ? Container(
+                          height: 150,
+                          child: ListView.builder(
+                            itemCount: addressSuggestions.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(addressSuggestions[index]),
+                                onTap: () {
+                                  addressController.text =
+                                      addressSuggestions[index];
+                                  addressSuggestions.clear();
+                                },
+                              );
+                            },
+                          ),
+                        )
+                      : SizedBox()),
+                ],
               ),
             ),
             ElevatedButton(
@@ -264,7 +284,9 @@ void ShowCustomBottomSheet() {
                 backgroundColor: AppConstant.appNameColor,
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Get.to(AddressSearchScreen());
+              },
               child: Text(
                 "Place Order",
                 style: TextStyle(
@@ -283,3 +305,92 @@ void ShowCustomBottomSheet() {
     elevation: 6,
   );
 }
+
+// void ShowCustomBottomSheet() {
+//   Get.bottomSheet(
+//     Container(
+//       height: Get.height * 0.8,
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.vertical(
+//           top: Radius.circular(16.0),
+//         ),
+//       ),
+//       child: SingleChildScrollView(
+//         child: Column(
+//           children: [
+//             Padding(
+//               padding:
+//                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+//               child: Container(
+//                 height: 50.0,
+//                 child: TextFormField(
+//                   textInputAction: TextInputAction.next,
+//                   decoration: InputDecoration(
+//                     labelText: 'Name',
+//                     contentPadding: EdgeInsets.symmetric(
+//                       horizontal: 10.0,
+//                     ),
+//                     hintStyle: TextStyle(fontSize: 12.0),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             Padding(
+//               padding:
+//                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+//               child: Container(
+//                 height: 50.0,
+//                 child: TextFormField(
+//                   textInputAction: TextInputAction.next,
+//                   keyboardType: TextInputType.phone,
+//                   decoration: InputDecoration(
+//                     labelText: 'Phone',
+//                     contentPadding: EdgeInsets.symmetric(
+//                       horizontal: 10.0,
+//                     ),
+//                     hintStyle: TextStyle(fontSize: 12.0),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             Padding(
+//               padding:
+//                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+//               child: Container(
+//                 height: 50.0,
+//                 child: TextFormField(
+//                   decoration: InputDecoration(
+//                     labelText: 'Adress',
+//                     contentPadding: EdgeInsets.symmetric(
+//                       horizontal: 10.0,
+//                     ),
+//                     hintStyle: TextStyle(fontSize: 12.0),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             ElevatedButton(
+//               style: ElevatedButton.styleFrom(
+//                 backgroundColor: AppConstant.appNameColor,
+//                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+//               ),
+//               onPressed: () {},
+//               child: Text(
+//                 "Place Order",
+//                 style: TextStyle(
+//                   color: AppConstant.appTextColor,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     ),
+//     backgroundColor: Colors.transparent,
+//     isDismissible: true,
+//     enableDrag: true,
+//     elevation: 6,
+//   );
+// }
