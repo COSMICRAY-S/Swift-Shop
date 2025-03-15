@@ -2,9 +2,9 @@
 
 A Flutter project developed by COSMICRAY-SAGOR.
 
-developer: Md Shah alom
-           CSE 15th batch PUST
-           (230118)
+developer: Md Shah alom__
+           CSE 15th batch PUST__
+           (230118)__
            
 ## Getting Started
 
