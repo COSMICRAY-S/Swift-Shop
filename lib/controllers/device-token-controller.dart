@@ -22,7 +22,7 @@ class GetDeviceTokenController extends GetxController {
 
       if (token != null) {
         deviceToken = token;
-        print("token: $deviceToken");
+        //print("token: $deviceToken");
         update();
       }
     } catch (e) {

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print, prefer_interpolation_to_compose_strings, non_constant_identifier_names
+// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print, prefer_interpolation_to_compose_strings, non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,12 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
+import 'package:swift_shop/controllers/get-customer-device-token-controller.dart';
 
 import '../../controllers/cart-price-controller.dart';
 import '../../models/cart-model.dart';
 import '../../services/geoapify_service.dart';
+import '../../services/place-order-service.dart';
 import '../../utils/app-constant.dart';
-import '../auth-ui/address_search.dart';
 
 class CheckOutScreen extends StatefulWidget {
   const CheckOutScreen({super.key});
@@ -21,9 +22,14 @@ class CheckOutScreen extends StatefulWidget {
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
   final ProductPriceController productPriceController =
       Get.put(ProductPriceController());
-  User? user = FirebaseAuth.instance.currentUser;
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,118 +198,138 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       ),
     );
   }
-}
 
-void ShowCustomBottomSheet() {
-  TextEditingController addressController = TextEditingController();
-  RxList<String> addressSuggestions = <String>[].obs;
+  void ShowCustomBottomSheet() {
+    TextEditingController addressController = TextEditingController();
+    RxList<String> addressSuggestions = <String>[].obs;
 
-  void fetchAddressSuggestions(String query) async {
-    if (query.length > 2) {
-      // Avoid unnecessary API calls
-      List<String> suggestions =
-          await GeoapifyService.getPlaceSuggestions(query);
-      addressSuggestions.value = suggestions;
-    } else {
-      addressSuggestions.clear();
+    void fetchAddressSuggestions(String query) async {
+      if (query.length > 2) {
+        // Avoid unnecessary API calls
+        List<String> suggestions =
+            await GeoapifyService.getPlaceSuggestions(query);
+        addressSuggestions.value = suggestions;
+      } else {
+        addressSuggestions.clear();
+      }
     }
-  }
 
-  Get.bottomSheet(
-    Container(
-      height: Get.height * 0.8,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(16.0),
+    Get.bottomSheet(
+      Container(
+        height: Get.height * 0.8,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(16.0),
+          ),
         ),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  labelText: 'Phone',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: addressController,
-                    onChanged: fetchAddressSuggestions,
-                    decoration: InputDecoration(
-                      labelText: 'Address',
-                      //contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                      border: OutlineInputBorder(),
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
+                child: TextFormField(
+                  controller: nameController,
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
                   ),
-                  Obx(() => addressSuggestions.isNotEmpty
-                      ? Container(
-                          height: 150,
-                          child: ListView.builder(
-                            itemCount: addressSuggestions.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(addressSuggestions[index]),
-                                onTap: () {
-                                  addressController.text =
-                                      addressSuggestions[index];
-                                  addressSuggestions.clear();
-                                },
-                              );
-                            },
-                          ),
-                        )
-                      : SizedBox()),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppConstant.appNameColor,
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              ),
-              onPressed: () {
-                Get.to(AddressSearchScreen());
-              },
-              child: Text(
-                "Place Order",
-                style: TextStyle(
-                  color: AppConstant.appTextColor,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
+                child: TextFormField(
+                  controller: phoneController,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    labelText: 'Phone',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: addressController,
+                      onChanged: fetchAddressSuggestions,
+                      decoration: InputDecoration(
+                        labelText: 'Address',
+                        //contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    Obx(() => addressSuggestions.isNotEmpty
+                        ? Container(
+                            height: 150,
+                            child: ListView.builder(
+                              itemCount: addressSuggestions.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(addressSuggestions[index]),
+                                  onTap: () {
+                                    addressController.text =
+                                        addressSuggestions[index];
+                                    addressSuggestions.clear();
+                                  },
+                                );
+                              },
+                            ),
+                          )
+                        : SizedBox()),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppConstant.appNameColor,
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                ),
+                onPressed: () async {
+                  if (nameController.text != '' &&
+                      phoneController.text != '' &&
+                      addressController.text != '') {
+                    String name = nameController.text.trim();
+                    String phone = phoneController.text.trim();
+                    String address = addressController.text.trim();
+
+                    String customarToken = await getCustomerDeviceToken();
+                    //place order
+                    placeOrder(
+                      context: context,
+                      customarName: name,
+                      customerPhone: phone,
+                      customarAddress: address,
+                      customarDeviceToken: customarToken,
+                    );
+                  } else {
+                    print("please fill all details");
+                  }
+                },
+                child: Text(
+                  "Place Order",
+                  style: TextStyle(
+                    color: AppConstant.appTextColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
-    ),
-    backgroundColor: Colors.transparent,
-    isDismissible: true,
-    enableDrag: true,
-    elevation: 6,
-  );
+      backgroundColor: Colors.transparent,
+      isDismissible: true,
+      enableDrag: true,
+      elevation: 6,
+    );
+  }
 }
 
 // void ShowCustomBottomSheet() {
