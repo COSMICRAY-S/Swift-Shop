@@ -2,6 +2,10 @@
 
 A Flutter project developed by COSMICRAY-SAGOR.
 
+developer: Md Shah alom__
+           CSE 15th batch PUST__
+           (230118)__
+           
 ## Getting Started
 
 This project is a starting point for a Flutter application.
