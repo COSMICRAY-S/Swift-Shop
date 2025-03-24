@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, avoid_unnecessary_containers, avoid_print
+// ignore_for_file: must_be_immutable, avoid_unnecessary_containers, avoid_print, deprecated_member_use
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/cart-model.dart';
 import '../../models/product-model.dart';
@@ -160,14 +161,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                               child: TextButton(
                                 child: Text(
-                                  "Buy now",
+                                  "Whats App",
                                   style: TextStyle(
                                       color: AppConstant.appTextColor,
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () {
-                                  //Get.to(() => SigninScreen());
+                                  sendMessageOnWhatsApp(
+                                    productModel: widget.productModel,
+                                  );
                                 },
                               ),
                             ),
@@ -211,6 +214,39 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
     );
   }
+
+  //sending message on whatsApp
+
+  static Future<void> sendMessageOnWhatsApp({
+    required ProductModel productModel,
+  }) async {
+    final String number = "+8801613022629";
+    final String message =
+        "Hello COSMICRAY \nI want to know about this product \n${productModel.productName} \n${productModel.productId}";
+
+    final Uri url =
+        Uri.parse("https://wa.me/$number?text=${Uri.encodeComponent(message)}");
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch ~~~~~~~~~~~~~~~~~~~~~~~~$url';
+    }
+  }
+  // static Future<void> sendMessageOnWhatsApp({
+  //   required ProductModel productModel,
+  // }) async {
+  //   final number = "+8801613022629";
+  //   final message =
+  //       "hello COSMICRAY \n I want to know about this product \n ${productModel.productName} \n ${productModel.productId}";
+  //   final url = 'https://wa.me/$number?text=${Uri.encodeComponent(message)}';
+
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch ~~~~~~~~~~~~~~~~~~~$url';
+  //   }
+  // }
 
   // chech product exist or not
   Future<void> checkProductExistance({

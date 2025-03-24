@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:swift_shop/screens/user-panel/all-orders-screen.dart';
 import 'package:swift_shop/utils/app-constant.dart';
 
 import '../screens/auth-ui/welcome-screen.dart';
@@ -140,6 +141,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   Icons.arrow_forward,
                   color: AppConstant.appTextColor,
                 ),
+                onTap: () {
+                  Get.back();
+                  Get.to(() => OrderScreen());
+                },
               ),
             ),
             Padding(
