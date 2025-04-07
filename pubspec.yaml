@@ -52,7 +52,7 @@ dependencies:
   url_launcher: ^6.3.1
   flutter_rating_bar: ^4.0.1
   razorpay_flutter: ^1.4.0
-  googleapis_auth: ^1.6.0
+  #googleapis_auth: ^1.6.0
 
 dev_dependencies:
   flutter_test:
