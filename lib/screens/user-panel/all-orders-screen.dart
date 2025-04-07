@@ -8,6 +8,7 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:swift_shop/models/order-model.dart';
+import 'package:swift_shop/screens/user-panel/add-review-screen.dart';
 
 import '../../controllers/cart-price-controller.dart';
 import '../../utils/app-constant.dart';
@@ -110,11 +111,14 @@ class _OrderScreenState extends State<OrderScreen> {
                       ),
                       title: Text(orderModel.productName),
                       subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "MRP: " + orderModel.productTotalPrice.toString(),
                             style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 20.0,
                           ),
                           orderModel.status != true
                               ? Text(
@@ -123,10 +127,20 @@ class _OrderScreenState extends State<OrderScreen> {
                                 )
                               : Text(
                                   "Deliverd",
-                                  style: TextStyle(color: Colors.green),
+                                  style: TextStyle(color: Colors.red),
                                 )
                         ],
                       ),
+                      trailing: orderModel.status == true
+                          ? ElevatedButton(
+                              onPressed: () => Get.to(
+                                () => AddReviewScreen(
+                                  orderModel: orderModel,
+                                ),
+                              ),
+                              child: Text('Review'),
+                            )
+                          : SizedBox.shrink(),
                     ),
                   );
                 },

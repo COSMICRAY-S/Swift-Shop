@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print, prefer_interpolation_to_compose_strings, non_constant_identifier_names, use_build_context_synchronously
+// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print, prefer_interpolation_to_compose_strings, non_constant_identifier_names, use_build_context_synchronously, prefer_final_fields, unused_field
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,9 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
-import 'package:swift_shop/controllers/get-customer-device-token-controller.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../controllers/cart-price-controller.dart';
+import '../../controllers/get-customer-device-token-controller.dart';
 import '../../models/cart-model.dart';
 import '../../services/geoapify_service.dart';
 import '../../services/place-order-service.dart';
@@ -30,8 +31,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
+  String? name;
+  String? phone;
+  String? address;
+  String? customarToken;
+
+  Razorpay _razorpay = Razorpay();
+
   @override
   Widget build(BuildContext context) {
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppConstant.appMainColor,
@@ -186,8 +197,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       ShowCustomBottomSheet();
+                      // GetServerKey getServerKey = GetServerKey();
+                      // String acessToken =
+                      //     await getServerKey.getServerKeyToken();
+                      // print(acessToken);
                     },
                   ),
                 ),
@@ -233,7 +248,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   controller: nameController,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'Name',
+                    labelText: 'Receiver Name',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -246,7 +261,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
-                    labelText: 'Phone',
+                    labelText: 'Receiver Phone',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -295,19 +310,33 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   if (nameController.text != '' &&
                       phoneController.text != '' &&
                       addressController.text != '') {
-                    String name = nameController.text.trim();
-                    String phone = phoneController.text.trim();
-                    String address = addressController.text.trim();
-
-                    String customarToken = await getCustomerDeviceToken();
+                    name = nameController.text.trim();
+                    phone = phoneController.text.trim();
+                    address = addressController.text.trim();
+                    customarToken = await getCustomerDeviceToken();
+/*******************************************************************************************/
+                    var options = {
+                      'key': 'rzp_test_YghCO1so2pwPnx',
+                      'amount': 1000,
+                      'currency': '',
+                      'name': 'Shah alom',
+                      'description': 'Gray T-Shirt',
+                      'prefill': {
+                        'contact': '8888888888',
+                        'email': 'test@razorpay.com'
+                      }
+                    };
+                    _razorpay.open(options);
+/*****************************************************************/
                     //place order
-                    placeOrder(
-                      context: context,
-                      customarName: name,
-                      customerPhone: phone,
-                      customarAddress: address,
-                      customarDeviceToken: customarToken,
-                    );
+                    // placeOrder(
+                    //   context: context,
+                    //   customarName: name,
+                    //   customerPhone: phone,
+                    //   customarAddress: address,
+                    //   customarDeviceToken: customarToken,
+                    // );
+/*****************************************************************/
                   } else {
                     print("please fill all details");
                   }
@@ -330,93 +359,28 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       elevation: 6,
     );
   }
-}
 
-// void ShowCustomBottomSheet() {
-//   Get.bottomSheet(
-//     Container(
-//       height: Get.height * 0.8,
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.vertical(
-//           top: Radius.circular(16.0),
-//         ),
-//       ),
-//       child: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             Padding(
-//               padding:
-//                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-//               child: Container(
-//                 height: 50.0,
-//                 child: TextFormField(
-//                   textInputAction: TextInputAction.next,
-//                   decoration: InputDecoration(
-//                     labelText: 'Name',
-//                     contentPadding: EdgeInsets.symmetric(
-//                       horizontal: 10.0,
-//                     ),
-//                     hintStyle: TextStyle(fontSize: 12.0),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             Padding(
-//               padding:
-//                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-//               child: Container(
-//                 height: 50.0,
-//                 child: TextFormField(
-//                   textInputAction: TextInputAction.next,
-//                   keyboardType: TextInputType.phone,
-//                   decoration: InputDecoration(
-//                     labelText: 'Phone',
-//                     contentPadding: EdgeInsets.symmetric(
-//                       horizontal: 10.0,
-//                     ),
-//                     hintStyle: TextStyle(fontSize: 12.0),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             Padding(
-//               padding:
-//                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-//               child: Container(
-//                 height: 50.0,
-//                 child: TextFormField(
-//                   decoration: InputDecoration(
-//                     labelText: 'Adress',
-//                     contentPadding: EdgeInsets.symmetric(
-//                       horizontal: 10.0,
-//                     ),
-//                     hintStyle: TextStyle(fontSize: 12.0),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             ElevatedButton(
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: AppConstant.appNameColor,
-//                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-//               ),
-//               onPressed: () {},
-//               child: Text(
-//                 "Place Order",
-//                 style: TextStyle(
-//                   color: AppConstant.appTextColor,
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     ),
-//     backgroundColor: Colors.transparent,
-//     isDismissible: true,
-//     enableDrag: true,
-//     elevation: 6,
-//   );
-// }
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    placeOrder(
+      context: context,
+      customarName: name!,
+      customerPhone: phone!,
+      customarAddress: address!,
+      customarDeviceToken: customarToken!,
+    );
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Do something when payment fails
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet was selected
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear(); // Removes all listeners
+  }
+}
